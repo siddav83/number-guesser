@@ -1,4 +1,4 @@
-let SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
 
 let recognition = new SpeechRecognition();
 const msgs = document.querySelector(".msg")
@@ -16,7 +16,7 @@ function randomNumber() {
 }
 
 function writeStuff(msg) {
-  msgs.innerHTML += ` <div>You said:</div>
+  msgs.innerHTML = ` <div>You said:</div>
   <span class="box">${msg}</span>`
 }
 
@@ -26,7 +26,7 @@ function toSpeak(event) {
   checkNumber(msg)
   // checkNumber(msg)
 }
-
+//logic for recognition
 function checkNumber(msg) {
   const num = +msg
   if(Number.isNaN(num)) {
@@ -35,28 +35,27 @@ function checkNumber(msg) {
   <div>is not a number</div>`
   return
 }
-if(num < random) {
-  msgs.innerHTML = `<div class="box">HIGHER</div>`
+if(num > 100 || num < 0) {
+  msgs.innerHTML = `<div "Number must be great that 0 or less than 100</div>`
+  return
+}
+if(num === random) {
+  document.body.innerHTML = `BINGO you won
+  you selected ${msg}`
   return
 }
 else if(num > random) {
-  msgs.innerHTML = `<div class="box">LOWER</div>`
+  msgs.innerHTML += `<div class="box">LOWER</div>`
   return
-
-}
-else if(num === random) {
-  msgs.innerHTML = `<div class="box">BINGO</div>`
+} else {
+  msgs.innerHTML += `<div class="box">LOWER</div>`
   return
+}}
 
-}
-}
-document.body.onclick = () => {
   recognition.start();
-  console.log('Ready to receive a color command.');
-}
 
 const random = randomNumber()
 console.log(random)
 
-onend = () => recognition.start()
+recognition.addEventListener('end',() => recognition.start())
 
